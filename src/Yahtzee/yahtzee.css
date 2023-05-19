@@ -1,0 +1,111 @@
+#main {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    background-color: var(--medium);
+    color: var(--white);
+}
+
+.die {
+    text-align: center;
+    padding: auto;
+}
+
+.scoreboard {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.scoreboard strong {
+    text-align: center;
+    font-size: 2em;
+    font-weight: bolder;
+    width: 100%;
+}
+
+.row {
+    width: 100%;
+}
+
+.input {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.input span{
+    width: 50%;
+}
+
+.input span:first-child {
+    text-align: right;
+}
+
+.section {
+    width: 100%;
+}
+
+.total {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.total span:first-child {
+    width: 75%;
+    text-align: right;
+}
+
+@media (min-width: 768px) {
+    .section {width: 50%;}
+    .row {width: 50%;}
+}
+
+@media (min-width: 992px) {
+    .section {width: 33.3%;}
+    .row {width: 33.3%;}
+}
+
+@media (min-width: 1200px) {
+    .section {width: 16.6%;}
+}
+
+.die figure {
+    box-sizing:border-box;
+    margin: 0.5em auto;
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+}
+
+.d1 { background-position: 0 0; }
+.d2 { background-position: -100px 0; }
+.d3 { background-position: -200px 0; }
+.d4 { background-position: -300px 0; }
+.d5 { background-position: -400px 0; }
+.d6 { background-position: -500px 0; }
+.d1:hover { background-position: 0 -200px;}
+.d2:hover { background-position: -100px -200px; }
+.d3:hover { background-position: -200px -200px; }
+.d4:hover { background-position: -300px -200px; }
+.d5:hover { background-position: -400px -200px; }
+.d6:hover { background-position: -500px -200px; }
+
+.l1 { background-position: 0 -100px; }
+.l2 { background-position: -100px -100px; }
+.l3 { background-position: -200px -100px; }
+.l4 { background-position: -300px -100px; }
+.l5 { background-position: -400px -100px; }
+.l6 { background-position: -500px -100px; }
+.l1:hover { background-position: 0 100px; }
+.l2:hover { background-position: -100px 100px; }
+.l3:hover { background-position: -200px 100px; }
+.l4:hover { background-position: -300px 100px; }
+.l5:hover { background-position: -400px 100px; }
+.l6:hover { background-position: -500px 100px; }
+
+.button {
+    width: 100%;
+}
