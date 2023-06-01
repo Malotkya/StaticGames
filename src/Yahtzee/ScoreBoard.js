@@ -1,58 +1,117 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import * as Scoring from "./Scoring/ScoreFunctions";
 import ScoreInput from './Scoring/ScoreInput';
 import ScoreTotal from "./Scoring/ScoreTotal";
 
 const ScoreBoard = props => {
-    const [upperScore, setUpperScore] = useState(0);
-    const [lowerScore, setLowerScore] = useState(0);
-    const [yahtzeeCount, setCount] = useState(0);
+    const [state, setState] = useState({
+        dice: [...props.dice],
+        upperScore: 0,
+        lowerScore: 0,
+        count: -1
+    });
 
-    const takeOne   = () => Scoring.takeNumber(1, props.dice);
-    const takeTwo   = () => Scoring.takeNumber(2, props.dice);
-    const takeThree = () => Scoring.takeNumber(3, props.dice);
-    const takeFour  = () => Scoring.takeNumber(4, props.dice);
-    const takeFive  = () => Scoring.takeNumber(5, props.dice);
-    const takeSix   = () => Scoring.takeNumber(6, props.dice);
-    const take3K    = () => Scoring.takeOK(3, props.dice);
-    const take4K    = () => Scoring.takeOK(4, props.dice);
-    const takeFH    = () => Scoring.takeFH(props.dice);
-    const takeSS    = () => Scoring.takeSS(props.dice);
-    const takeLS    = () => Scoring.takeLS(props.dice);
-    const takeY     = () => Scoring.takeY(props.dice);
-    const takeCH    = () => Scoring.takeCH(props.dice);
+    const takeOne   = dice => Scoring.takeNumber(1, dice);
+    const takeTwo   = dice => Scoring.takeNumber(2, dice);
+    const takeThree = dice => Scoring.takeNumber(3, dice);
+    const takeFour  = dice => Scoring.takeNumber(4, dice);
+    const takeFive  = dice => Scoring.takeNumber(5, dice);
+    const takeSix   = dice => Scoring.takeNumber(6, dice);
+    const take3K    = dice => Scoring.takeOK(3, dice);
+    const take4K    = dice => Scoring.takeOK(4, dice);
+    const takeFH    = dice => Scoring.takeFH(dice);
+    const takeSS    = dice => Scoring.takeSS(dice);
+    const takeLS    = dice => Scoring.takeLS(dice);
+    const takeCH    = dice => Scoring.takeCH(dice);
+
+    const takeScore = (setScore, scoringFunction, updateFunction) => {
+        setState(s=>{
+            let state = {...s};
+            let score = scoringFunction(s.dice);
+            updateFunction(score);
+            state[setScore] += score;
+
+            if(s.count>=0){
+                if(Scoring.testYahtzee(s.dice))
+                    state.count++;
+            }
+
+            return state;
+        });
+    }
+
+    const takeYahtzee = updateFunction => {
+        setState(s=>{
+            let state = {...s};
+            let score = Scoring.takeY(s.dice);
+            updateFunction(score);
+            state.lowerScore += score;
+
+            if(score>=0){
+                state.count = 0;
+            }
+
+            return state;
+        });
+    }
+
+    const getYahtzeeCount = () => {
+        if(state.count < 0)
+            return "";
+
+        return state.count;
+    }
+
+    const getTotal = () => {
+        let additionalPoints = 0;
+        if(state.upperScore > 63){
+            additionalPoints = 35;
+        }
+
+        if(state.count > 0){
+            additionalPoints += state.count * 100;
+        }
+
+        return state.upperScore + state.lowerScore + additionalPoints;
+    }
+
+    useEffect(()=>{
+        setState(state=>{
+            return {...state, dice: props.dice}
+        });
+    }, [props.dice])
 
     return (
         <div className="scoreboard">
             <strong>Scoring</strong>
             <div className="row">
-                <ScoreInput text="Ones:" onClick={takeOne} />
-                <ScoreInput text="Twos:" onClick={takeTwo} />
-                <ScoreInput text="Threes:" onClick={takeThree} />
-                <ScoreInput text="Fours:" onClick={takeFour} />
-                <ScoreInput text="Fives:" onClick={takeFive} />
-                <ScoreInput text="Sixs:" onClick={takeSix} />
+                <ScoreInput update={(callback)=>takeScore("upperScore", takeOne, callback)}   text="Ones:" />
+                <ScoreInput update={(callback)=>takeScore("upperScore", takeTwo, callback)}   text="Twos:" />
+                <ScoreInput update={(callback)=>takeScore("upperScore", takeThree, callback)} text="Threes:"/>
+                <ScoreInput update={(callback)=>takeScore("upperScore", takeFour, callback)}  text="Fours:" />
+                <ScoreInput update={(callback)=>takeScore("upperScore", takeFive, callback)}  text="Fives:"/>
+                <ScoreInput update={(callback)=>takeScore("upperScore", takeSix, callback)}   text="Sixs:"/>
                 <div className="input">
                     <span>Bonus Points:</span>
                     <span className="btn"></span>
                 </div>
             </div>
             <div className="row">
-                <ScoreInput text="Three of a Kind:" onClick={take3K} />
-                <ScoreInput text="Four of a Kind:" onClick={take4K} />
-                <ScoreInput text="Full House:" onClick={takeFH} />
-                <ScoreInput text="Small Strait:" onClick={takeSS} />
-                <ScoreInput text="Large Strait:" onClick={takeLS} />
-                <ScoreInput text="Yatzee:" onClick={takeY} />
-                <ScoreInput text="Chance:" onClick={takeCH} />
+                <ScoreInput update={(callback)=>takeScore("lowerScore", take3K, callback)} text="Three of a Kind:" />
+                <ScoreInput update={(callback)=>takeScore("lowerScore", take4K, callback)} text="Four of a Kind:"/>
+                <ScoreInput update={(callback)=>takeScore("lowerScore", takeFH, callback)} text="Full House:" />
+                <ScoreInput update={(callback)=>takeScore("lowerScore", takeSS, callback)} text="Small Strait:" />
+                <ScoreInput update={(callback)=>takeScore("lowerScore", takeLS, callback)} text="Large Strait:" />
+                <ScoreInput update={(callback)=>takeYahtzee(callback)}                     text="Yatzee:" />
+                <ScoreInput update={(callback)=>takeScore("lowerScore", takeCH, callback)} text="Chance:" />
             </div>
             <div className="row">
-                <ScoreTotal text="Upper Sub Total:" />
-                <ScoreTotal text="Lower Sub Total:" />
+                <ScoreTotal text="Upper Sub Total:" value={state.upperScore}/>
+                <ScoreTotal text="Lower Sub Total:" value={state.lowerScore}/>
                 <hr/>
-                <ScoreTotal text="Additional Yahtzee's:" />
+                <ScoreTotal text="Additional Yahtzee's:" value={getYahtzeeCount()}/>
                 <hr/>
-                <ScoreTotal text="Total:" />
+                <ScoreTotal text="Total:" value={getTotal()} />
             </div>
         </div>
     );
