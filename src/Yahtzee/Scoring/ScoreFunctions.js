@@ -69,6 +69,9 @@ export function takeFH(dice){
 
         if(count === 3)
             threeOfAKind = true;
+
+        if(twoOfAKind&&threeOfAKind)
+            break;
     }
 
     if(twoOfAKind && threeOfAKind){
@@ -108,7 +111,7 @@ export function takeLS(dice){
     return 0;
 }
 
-function testYahtzee(dice){
+export function testYahtzee(dice){
     let number = dice[0];
     for(let d of dice){
         if(number !== d)
