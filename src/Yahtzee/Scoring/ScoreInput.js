@@ -1,14 +1,15 @@
 import React, {useState} from "react";
 
 const ScoreInput = props => {
+    const [score, setScore] = useState(<button onClick={()=>{
+        const update = value => {
+            setScore(<span className="btn">{value}</span>);
+        }
+
+        props.update(update);
+    }}>Take</button>);
     
-    const takeScore = event => {
-        let output = props.onClick(event);
-        setScore(<span className="btn">{output}</span>);
-    }
-
-    const [score, setScore] = useState(<button onClick={takeScore}>Take</button>);
-
+    
     return (
         <div className="input">
             <span>{props.text}</span>
