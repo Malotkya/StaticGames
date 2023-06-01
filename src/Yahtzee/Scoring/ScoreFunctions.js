@@ -1,3 +1,5 @@
+import {ZERO, FULL_HOUSE, SMALL_STRAIT, LARGE_STRAIT, YAHTZEE} from "./ScoringConstants"
+
 /** Take Number Score
      * 
      * @param {number} number 
@@ -75,10 +77,10 @@ export function takeFH(dice){
     }
 
     if(twoOfAKind && threeOfAKind){
-        return 25;
+        return FULL_HOUSE;
     }
 
-    return 0;
+    return ZERO;
 }
 
 function hasNext(dice, current, count){
@@ -94,10 +96,10 @@ export function takeSS(dice){
         let count = hasNext(dice, d, 1);
 
         if(count >= 4)
-            return 30;
+            return SMALL_STRAIT;
     }
 
-    return 0;
+    return ZERO;
 }
 
 export function takeLS(dice){
@@ -105,10 +107,10 @@ export function takeLS(dice){
         let count = hasNext(dice, d, 1);
 
         if(count >= 5)
-            return 40;
+            return LARGE_STRAIT;
     }
 
-    return 0;
+    return ZERO;
 }
 
 export function testYahtzee(dice){
@@ -122,9 +124,9 @@ export function testYahtzee(dice){
 
 export function takeY(dice){
     if(testYahtzee(dice))
-        return 50;
+        return YAHTZEE;
 
-    return 0;
+    return ZERO;
 }
 
 export function takeCH(dice){

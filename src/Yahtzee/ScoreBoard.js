@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import * as Scoring from "./Scoring/ScoreFunctions";
 import ScoreInput from './Scoring/ScoreInput';
 import ScoreTotal from "./Scoring/ScoreTotal";
+import { UPPER_SCORE_BONUS, UPPER_SCORE_LIMIT,ADDITIONAL_YAHTZEE } from './Scoring/ScoringConstants';
 
 const ScoreBoard = props => {
     const [state, setState] = useState({
@@ -64,12 +65,12 @@ const ScoreBoard = props => {
 
     const getTotal = () => {
         let additionalPoints = 0;
-        if(state.upperScore > 63){
-            additionalPoints = 35;
+        if(state.upperScore > UPPER_SCORE_LIMIT){
+            additionalPoints = UPPER_SCORE_BONUS;
         }
 
         if(state.count > 0){
-            additionalPoints += state.count * 100;
+            additionalPoints += state.count * ADDITIONAL_YAHTZEE;
         }
 
         return state.upperScore + state.lowerScore + additionalPoints;
