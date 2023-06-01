@@ -5,10 +5,11 @@ import ScoreBoard from "./ScoreBoard";
 
 const Yahtzee = () =>{
     const [diceValues, setDice] = useState([1, 2, 3, 4, 5]);
+    const reset = () => setDice([1, 2, 3, 4, 5]);
 
     return (
         <>
-            <GameBoard dice={diceValues}/>
+            <GameBoard dice={diceValues} onRole={setDice} onReset={reset}/>
             <ScoreBoard dice={diceValues} />
         </>
     );
