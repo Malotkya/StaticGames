@@ -25,12 +25,17 @@ const GameBoard = props =>{
         props.onRole(dice);
     }
 
+    const reset = () => {
+        setLocked(0);
+        props.onReset();
+    }
+
     return (
         <>
-            {props.dice.map((value, index)=><Dice value={value} locked={isLocked(index)} index={index} onClick={()=>flip(index)}/>)}
+            {props.dice.map((value, index)=><Dice key={index} value={value} locked={isLocked(index)} index={index} onClick={()=>flip(index)}/>)}
             <section>
                 <button className="button" id="role" onClick={roleDice}>Role Dice</button>
-                <button className="button" onClick={props.onReset}>Reset</button>
+                <button className="button" onClick={reset}>Reset</button>
             </section>
         </>
     );
