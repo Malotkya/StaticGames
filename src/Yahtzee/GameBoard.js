@@ -1,16 +1,28 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Dice from "./Dice";
 
 const GameBoard = props =>{
-    const [locked, setLocked] = useState(0);
+    const [state, setState] = useState({
+        locked: 0,
+        roleCount: props.roleCount
+    });
+
     const flip = index => {
-        let mask = 1 << index;
-        setLocked(v=>v^=mask);
+        setState(s=>{
+            let state = {...s};
+            if(s.roleCount === 0){
+                alert("You need to role the dice first!");
+            } else {
+                let mask = 1 << index;
+                state.locked = s.locked^mask;
+            }
+            return state;
+        });
     }
 
     const isLocked = index => {
         let mask = 1 << index;
-        return ( (locked&mask) !== 0);
+        return ( (state.locked&mask) !== 0);
     }
 
     const roleDice = () =>{
@@ -26,9 +38,26 @@ const GameBoard = props =>{
     }
 
     const reset = () => {
-        setLocked(0);
+        setState(s=>{
+            let state = {...s};
+            state.locked = 0;
+            return state;
+        })
         props.onReset();
     }
+
+    useEffect(()=>{
+        setState(s=>{
+            let state = {...s};
+            if(props.roleCount === -1){
+                state.locked = Math.pow(2, props.dice.length)-1;
+            } else if(props.roleCount === 0) {
+                state.locked = 0;
+            }
+            state.roleCount = props.roleCount;
+            return state;
+        });
+    }, [props.roleCount, props.dice.length])
 
     return (
         <>
