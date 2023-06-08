@@ -12,10 +12,14 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "watch": "react-scripts start",
     "build": "react-scripts build",
+    "clean": "rm -r ./build && npm run build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+
+    "start": "npm run build && firebase start",
+    "deploy": "npm run clean && firebase deploy"
   },
   "eslintConfig": {
     "extends": [
