@@ -64,8 +64,7 @@ const ScoreBoard = props => {
                 let state = {...s};
     
                 if(state.locked){
-                    alert("Need to role dice first!");
-                    reject();
+                    reject(new Error("Need to role dice first!"));
                 } else {
                     let score = scoringFunction(s.dice);
                     state[setScore] += score;

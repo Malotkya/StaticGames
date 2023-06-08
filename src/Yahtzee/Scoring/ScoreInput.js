@@ -10,9 +10,13 @@ const ScoreInput = props => {
      * 
      */
     const update = async() => {
-        let newScore = await props.update();
-
-        setScore(<span className='btn'>{newScore}</span>);
+        try {
+            let newScore = await props.update();
+            setScore(<span className='btn'>{newScore}</span>);
+        } catch (e){
+            alert(e.message);
+        }
+        
     }
 
     //Input State.
