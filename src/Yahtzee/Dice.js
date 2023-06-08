@@ -1,7 +1,12 @@
 import React from 'react';
 import image from './dice.png';
 
-const dice = props => {
+/** Dice Component
+ * 
+ * @author Alex Malotky
+ */
+const Dice = props => {
+    //Constants used by Component
     const value = (props.locked? 'l' : 'd') + props.value;
     const lock = () => props.onClick(props.index);
 
@@ -14,4 +19,4 @@ const dice = props => {
     );
 }
 
-export default dice;
+export default Dice;

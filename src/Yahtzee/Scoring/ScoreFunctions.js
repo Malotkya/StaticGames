@@ -1,3 +1,7 @@
+/** Scoring Functions File
+ * 
+ * @author Alex Malotky
+ */
 import {ZERO, FULL_HOUSE, SMALL_STRAIT, LARGE_STRAIT, YAHTZEE} from "./ScoringConstants"
 
 /** Take Number Score

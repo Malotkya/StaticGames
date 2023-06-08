@@ -4,6 +4,7 @@ import ScoreInput from './Scoring/ScoreInput';
 import ScoreTotal from "./Scoring/ScoreTotal";
 import { UPPER_SCORE_BONUS, UPPER_SCORE_LIMIT,ADDITIONAL_YAHTZEE } from './Scoring/ScoringConstants';
 
+// Scoring functions wrappers
 const takeOne   = dice => Scoring.takeNumber(1, dice);
 const takeTwo   = dice => Scoring.takeNumber(2, dice);
 const takeThree = dice => Scoring.takeNumber(3, dice);
@@ -17,8 +18,13 @@ const takeSS    = dice => Scoring.takeSS(dice);
 const takeLS    = dice => Scoring.takeLS(dice);
 const takeCH    = dice => Scoring.takeCH(dice);
 
-
+/** Score Board Component
+ * 
+ * @author Alex Malotky
+ */
 const ScoreBoard = props => {
+    // Score Board State
+    // TODO: switch to useReducer.
     const [state, setState] = useState({
         dice: [...props.dice],
         upperScore: 0,
@@ -27,6 +33,15 @@ const ScoreBoard = props => {
         locked: true
     });
 
+    /** Handle Click Wrapper Function
+     * 
+     * Used to prevent double update error
+     * Allows for props.onClick() to be called outside of setState();
+     * 
+     * @param {string} setScore 
+     * @param {Function} scoringFunction 
+     * @returns {Promise<Number>}
+     */
     const handleClick = (setScore, scoringFunction) => {
         return new Promise((resolve, reject)=>{
             takeScore(setScore, scoringFunction)
@@ -37,9 +52,14 @@ const ScoreBoard = props => {
         });
     }
 
+    /** Take Score Function
+     * 
+     * @param {string} setScore 
+     * @param {Function} scoringFunction 
+     * @returns {Promise<Number>}
+     */
     const takeScore = (setScore, scoringFunction) => {
         return new Promise((resolve, reject)=>{
-            let score = 0;
             setState(s=>{
                 let state = {...s};
     
@@ -47,7 +67,7 @@ const ScoreBoard = props => {
                     alert("Need to role dice first!");
                     reject();
                 } else {
-                    score = scoringFunction(s.dice);
+                    let score = scoringFunction(s.dice);
                     state[setScore] += score;
     
                     if(s.count>=0){
@@ -62,6 +82,12 @@ const ScoreBoard = props => {
         });
     }
 
+    /** Take Yaahtzee Function
+     * 
+     * Calls takeScore(handleClick) and updates allowance of additional yatzhees if appropriate
+     * 
+     * @returns {Promise<Number>}
+     */
     const takeYahtzee = () => {
         return new Promise((resolve, reject)=>{
             handleClick('lowerScore', Scoring.takeY)
@@ -78,13 +104,21 @@ const ScoreBoard = props => {
         })
     }
 
+    /** Get Yahtzee Count
+     * 
+     * @returns {string}
+     */
     const getYahtzeeCount = () => {
         if(state.count < 0)
             return "";
 
-        return state.count;
+        return state.count.toString();
     }
 
+    /** Get Score Total
+     * 
+     * @returns {Number}
+     */
     const getTotal = () => {
         let additionalPoints = 0;
         if(state.upperScore > UPPER_SCORE_LIMIT){
@@ -98,6 +132,9 @@ const ScoreBoard = props => {
         return state.upperScore + state.lowerScore + additionalPoints;
     }
 
+    /** Effect Update Hook
+     * 
+     */
     useEffect(()=>{
         setState(s=>{
           let state = {...s};

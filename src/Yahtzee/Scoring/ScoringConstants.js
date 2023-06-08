@@ -1,3 +1,7 @@
+/** Constants Used for Scoring
+ * 
+ * @author Alex Malotky
+ */
 export const ZERO = 0;
 export const FULL_HOUSE = 25;
 export const SMALL_STRAIT = 30;

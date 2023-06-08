@@ -1,13 +1,23 @@
 import React, {useState, useEffect} from 'react';
 import Dice from "./Dice";
 
+/** Game Board Component
+ * 
+ * @author Alex Malotky
+ */
 const GameBoard = props =>{
+    // Gameboard State
+    // TODO: switch to useReducer.
     const [state, setState] = useState({
         locked: 0,
         roleCount: props.roleCount
     });
 
-    const flip = index => {
+    /** Flip Dice Lock
+     * 
+     * @param {Number} index 
+     */
+    const flipLock = index => {
         setState(s=>{
             let state = {...s};
             if(s.roleCount === 0){
@@ -20,11 +30,19 @@ const GameBoard = props =>{
         });
     }
 
+    /** Is Dice Locked
+     * 
+     * @param {Number} index 
+     * @returns {Boolean}
+     */
     const isLocked = index => {
         let mask = 1 << index;
         return ( (state.locked&mask) !== 0);
     }
 
+    /** Role Dice
+     * 
+     */
     const roleDice = () =>{
         let dice = [];
         for(let i in props.dice){
@@ -37,6 +55,9 @@ const GameBoard = props =>{
         props.onRole(dice);
     }
 
+    /** Reset Game
+     * 
+     */
     const reset = () => {
         setState(s=>{
             let state = {...s};
@@ -46,6 +67,9 @@ const GameBoard = props =>{
         props.onReset();
     }
 
+    /** Effect Update Hook
+     * 
+     */
     useEffect(()=>{
         setState(s=>{
             let state = {...s};
@@ -61,7 +85,7 @@ const GameBoard = props =>{
 
     return (
         <>
-            {props.dice.map((value, index)=><Dice key={index} value={value} locked={isLocked(index)} index={index} onClick={()=>flip(index)}/>)}
+            {props.dice.map((value, index)=><Dice key={index} value={value} locked={isLocked(index)} index={index} onClick={()=>flipLock(index)}/>)}
             <section>
                 <button className="button" id="role" onClick={roleDice}>Role Dice</button>
                 <button className="button" onClick={reset}>Reset</button>

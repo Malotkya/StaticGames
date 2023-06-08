@@ -1,5 +1,9 @@
 import React from "react";
 
+/** Score Total Component
+ * 
+ * @author Alex Malotky
+ */
 const ScoreTotal = props => {
     return (
         <div className="total">
