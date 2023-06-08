@@ -9,7 +9,8 @@ const ScoreBoard = props => {
         dice: [...props.dice],
         upperScore: 0,
         lowerScore: 0,
-        count: -1
+        count: -1,
+        locked: true
     });
 
     const takeOne   = dice => Scoring.takeNumber(1, dice);
@@ -25,35 +26,49 @@ const ScoreBoard = props => {
     const takeLS    = dice => Scoring.takeLS(dice);
     const takeCH    = dice => Scoring.takeCH(dice);
 
-    const takeScore = (setScore, scoringFunction, updateFunction) => {
-        setState(s=>{
-            let state = {...s};
-            let score = scoringFunction(s.dice);
-            updateFunction(score);
-            state[setScore] += score;
-
-            if(s.count>=0){
-                if(Scoring.testYahtzee(s.dice))
-                    state.count++;
-            }
-
-            return state;
+    const takeScore = (setScore, scoringFunction) => {
+        return new Promise((resolve, reject)=>{
+            let score = 0;
+            setState(s=>{
+                let state = {...s};
+    
+                if(state.locked){
+                    alert("Need to role dice first!");
+                    reject();
+                } else {
+                    score = scoringFunction(s.dice);
+                    state[setScore] += score;
+    
+                    if(s.count>=0){
+                        if(Scoring.testYahtzee(s.dice))
+                            state.count++;
+                    }
+                    resolve(score);
+                }
+                
+                
+                props.onClick();
+                return state;
+            });
         });
     }
 
-    const takeYahtzee = updateFunction => {
-        setState(s=>{
-            let state = {...s};
-            let score = Scoring.takeY(s.dice);
-            updateFunction(score);
-            state.lowerScore += score;
-
-            if(score>=0){
-                state.count = 0;
-            }
-
-            return state;
-        });
+    const takeYahtzee = () => {
+        return new Promise((resolve, reject)=>{
+            takeScore('lowerScore', Scoring.takeY)
+                .then(newScore=>{
+                    if(newScore > 0){
+                        setState(s=>{
+                            let state = {...s};
+                            state.count = 0;
+                            return state;
+                        });
+                    }
+                    resolve(newScore);
+                }).catch(e=>{
+                    reject(e);
+                })
+        })
     }
 
     const getYahtzeeCount = () => {
@@ -77,34 +92,37 @@ const ScoreBoard = props => {
     }
 
     useEffect(()=>{
-        setState(state=>{
-            return {...state, dice: props.dice}
+        setState(s=>{
+          let state = {...s};
+          state.dice = props.dice;
+          state.locked = props.locked;
+          return state; 
         });
-    }, [props.dice])
+    }, [props.dice, props.locked])
 
     return (
         <div className="scoreboard">
             <strong>Scoring</strong>
             <div className="row">
-                <ScoreInput update={(callback)=>takeScore("upperScore", takeOne, callback)}   text="Ones:" />
-                <ScoreInput update={(callback)=>takeScore("upperScore", takeTwo, callback)}   text="Twos:" />
-                <ScoreInput update={(callback)=>takeScore("upperScore", takeThree, callback)} text="Threes:"/>
-                <ScoreInput update={(callback)=>takeScore("upperScore", takeFour, callback)}  text="Fours:" />
-                <ScoreInput update={(callback)=>takeScore("upperScore", takeFive, callback)}  text="Fives:"/>
-                <ScoreInput update={(callback)=>takeScore("upperScore", takeSix, callback)}   text="Sixs:"/>
+                <ScoreInput update={()=>takeScore("upperScore", takeOne)}   text="Ones:" />
+                <ScoreInput update={()=>takeScore("upperScore", takeTwo)}   text="Twos:" />
+                <ScoreInput update={()=>takeScore("upperScore", takeThree)} text="Threes:"/>
+                <ScoreInput update={()=>takeScore("upperScore", takeFour)}  text="Fours:" />
+                <ScoreInput update={()=>takeScore("upperScore", takeFive)}  text="Fives:"/>
+                <ScoreInput update={()=>takeScore("upperScore", takeSix)}   text="Sixs:"/>
                 <div className="input">
                     <span>Bonus Points:</span>
                     <span className="btn"></span>
                 </div>
             </div>
             <div className="row">
-                <ScoreInput update={(callback)=>takeScore("lowerScore", take3K, callback)} text="Three of a Kind:" />
-                <ScoreInput update={(callback)=>takeScore("lowerScore", take4K, callback)} text="Four of a Kind:"/>
-                <ScoreInput update={(callback)=>takeScore("lowerScore", takeFH, callback)} text="Full House:" />
-                <ScoreInput update={(callback)=>takeScore("lowerScore", takeSS, callback)} text="Small Strait:" />
-                <ScoreInput update={(callback)=>takeScore("lowerScore", takeLS, callback)} text="Large Strait:" />
-                <ScoreInput update={(callback)=>takeYahtzee(callback)}                     text="Yatzee:" />
-                <ScoreInput update={(callback)=>takeScore("lowerScore", takeCH, callback)} text="Chance:" />
+                <ScoreInput update={()=>takeScore("lowerScore", take3K)} text="Three of a Kind:" />
+                <ScoreInput update={()=>takeScore("lowerScore", take4K)} text="Four of a Kind:"/>
+                <ScoreInput update={()=>takeScore("lowerScore", takeFH)} text="Full House:" />
+                <ScoreInput update={()=>takeScore("lowerScore", takeSS)} text="Small Strait:" />
+                <ScoreInput update={()=>takeScore("lowerScore", takeLS)} text="Large Strait:" />
+                <ScoreInput update={()=>takeYahtzee()}                   text="Yatzee:" />
+                <ScoreInput update={()=>takeScore("lowerScore", takeCH)} text="Chance:" />
             </div>
             <div className="row">
                 <ScoreTotal text="Upper Sub Total:" value={state.upperScore}/>
