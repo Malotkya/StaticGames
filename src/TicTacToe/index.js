@@ -33,7 +33,7 @@ const DEFAULT_STATE = {
 export default class TicTacToe extends Component {
     constructor(props){
         super(props);
-        this.state = DEFAULT_STATE;
+        this.state = JSON.parse(JSON.stringify(DEFAULT_STATE));
     }
 
     updateGame(value, index){
@@ -75,8 +75,7 @@ export default class TicTacToe extends Component {
     }
 
     reset(){
-        this.setState((s,p)=>DEFAULT_STATE);
-        this.forceUpdate();
+        this.setState((s,p)=>JSON.parse(JSON.stringify(DEFAULT_STATE)));
     }
 
     render(){
