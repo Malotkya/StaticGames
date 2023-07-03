@@ -20,7 +20,7 @@ const ScoreInput = props => {
     }
 
     //Input State.
-    const [score, setScore] = useState(<button onClick={update}>Take</button>);
+    const [score, setScore] = useState(<button onClick={update} className="btn">Take</button>);
     
     return (
         <div className="input">

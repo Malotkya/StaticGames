@@ -8,7 +8,7 @@ const ScoreTotal = props => {
     return (
         <div className="total">
             <span>{props.text}</span>
-            <span>{props.value}</span>
+            <span className="btn">{props.value}</span>
         </div>
     );
 }
