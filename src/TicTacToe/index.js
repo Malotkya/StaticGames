@@ -91,11 +91,13 @@ export default class TicTacToe extends Component {
     render(){
         return (
             <>
-            <h2>Tic Tac Toe</h2>
+                <h2>Tic Tac Toe</h2>
                 <div id="tic-tac-toe">
                     {this.state.board.map((state, index)=><Tile key={index} onClick={()=>this.handleClick(index)} state={state} />)}
                 </div>
-                <button onClick={()=>this.reset()}>Reset</button>
+                <div id="reset-button">
+                    <button onClick={()=>this.reset()}>Reset</button>
+                </div>
             </>
         )
     }

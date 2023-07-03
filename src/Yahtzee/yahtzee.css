@@ -42,6 +42,10 @@
     margin: auto;
 }
 
+.section {
+    text-align: center;
+}
+
 /* Score Board */
 #scoreboard{
     grid-row: 1 / 3;
@@ -55,6 +59,10 @@
     flex-flow: row nowrap;
     justify-content: space-between;
     padding: 0 .2em;
+}
+
+.total {
+    text-align: left;
 }
 
 .btn {
