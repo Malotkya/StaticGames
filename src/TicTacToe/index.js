@@ -73,7 +73,15 @@ export default class TicTacToe extends Component {
 
     setWinner(player){
         alert(player + " wins!");
-        this.setState({currentPlayer: "game_over"});
+        this.setState((s,p)=>{
+            return {
+                board: s.board.map(value=>{
+                    if(value === "")
+                        return " ";
+                    return value;
+                })
+            };
+        });
     }
 
     reset(){

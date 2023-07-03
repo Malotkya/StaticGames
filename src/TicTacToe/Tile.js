@@ -1,21 +1,27 @@
-import {useState, useEffect} from 'react';
+import {Component} from 'react';
 
-const Tile = props =>  {
-    const button = <button onClick={props.onClick}></button>;
-    const [value, setValue] = useState();
-    
-    useEffect(()=>{
-        if(props.state === "")
-            setValue(button)
-        else 
-            setValue(props.state)
-    }, [props.state, button])
+export default class Tile extends Component {
+    constructor(props){
+        super(props);
+        this.state = {value: <button onClick={this.props.onClick}></button>};
+    }
 
-    return (
-        <div className="tile">
-            {value}
-        </div>
-    )
-};
 
-export default Tile;
+
+    componentDidUpdate(prevProps, prevState){
+        if(prevProps !== this.props){
+            if(this.props.state !== "")
+                this.setState({value: this.props.state});
+            else
+            this.setState({value: <button onClick={this.props.onClick}></button>});
+        }
+    }
+
+    render() {
+        return (
+            <div className="tile">
+                {this.state.value}
+            </div>
+        )
+    }
+}
