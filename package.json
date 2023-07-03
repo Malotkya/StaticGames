@@ -17,7 +17,7 @@
     "clean": "rm -r ./build && npm run build",
     "eject": "react-scripts eject",
 
-    "start": "npm run build && firebase start",
+    "start": "npm run build && firebase serve",
     "deploy": "npm run clean && firebase deploy"
   },
   "eslintConfig": {
