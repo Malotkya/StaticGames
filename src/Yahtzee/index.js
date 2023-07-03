@@ -55,8 +55,11 @@ const Yahtzee = () =>{
 
     return (
         <>
-            <GameBoard dice={diceValues} onRole={roles} onReset={reset} roleCount={lockDice()}/>
-            <ScoreBoard key={resetKey} dice={diceValues} onClick={()=>setCount(0)} locked={lockScore()} />
+            <h2>Yahtzee</h2>
+            <div id="yathzee-main">
+                <GameBoard dice={diceValues} onRole={roles} onReset={reset} roleCount={lockDice()}/>
+                <ScoreBoard key={resetKey} dice={diceValues} onClick={()=>setCount(0)} locked={lockScore()} />
+            </div>
         </>
     );
 }
