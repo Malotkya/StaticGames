@@ -144,9 +144,10 @@ const ScoreBoard = props => {
     }, [props.dice, props.locked])
 
     return (
-        <div className="scoreboard">
-            <strong>Scoring</strong>
+        <div id="scoreboard" className="section">
+            <strong class="header">Scoring</strong>
             <div className="row">
+                <strong>Upper Section:</strong>
                 <ScoreInput update={()=>handleClick("upperScore", takeOne)}   text="Ones:" />
                 <ScoreInput update={()=>handleClick("upperScore", takeTwo)}   text="Twos:" />
                 <ScoreInput update={()=>handleClick("upperScore", takeThree)} text="Threes:"/>
@@ -159,6 +160,7 @@ const ScoreBoard = props => {
                 </div>
             </div>
             <div className="row">
+                <strong>Lower Section:</strong>
                 <ScoreInput update={()=>handleClick("lowerScore", take3K)} text="Three of a Kind:" />
                 <ScoreInput update={()=>handleClick("lowerScore", take4K)} text="Four of a Kind:"/>
                 <ScoreInput update={()=>handleClick("lowerScore", takeFH)} text="Full House:" />
