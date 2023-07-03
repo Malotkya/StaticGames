@@ -10,8 +10,10 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <button onClick={()=>setGame(<Yahtzee />)}>Yahtzee</button>
-        <button onClick={()=>setGame(<TicTacToe />)}>Tic Tac Toe</button>
+        <nav>
+          <button onClick={()=>setGame(<Yahtzee />)}>Yahtzee</button>
+          <button onClick={()=>setGame(<TicTacToe />)}>Tic Tac Toe</button>
+        </nav>
       </header>
       <main>
         {game}
