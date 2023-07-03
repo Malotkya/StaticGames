@@ -145,7 +145,7 @@ const ScoreBoard = props => {
 
     return (
         <div id="scoreboard" className="section">
-            <strong class="header">Scoring</strong>
+            <strong className="header">Scoring</strong>
             <div className="row">
                 <strong>Upper Section:</strong>
                 <ScoreInput update={()=>handleClick("upperScore", takeOne)}   text="Ones:" />
