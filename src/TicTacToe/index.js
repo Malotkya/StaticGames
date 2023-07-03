@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Tile from './Tile';
 import './tictactoe.css';
 
 const WINNING_SCORES = [
@@ -36,8 +37,9 @@ export default class TicTacToe extends Component {
         this.state = JSON.parse(JSON.stringify(DEFAULT_STATE));
     }
 
-    updateGame(value, index){
+    updateGame(index){
         return new Promise((resolve, reject)=>{
+            let value = Math.pow(2, index);
             this.setState((s, p)=>{
                 let state = {...s};
 
@@ -57,8 +59,8 @@ export default class TicTacToe extends Component {
         });
     }
 
-    handleClick(value, index){
-        this.updateGame(value, index)
+    handleClick(index){
+        this.updateGame(index)
             .then( (player)=> {
                 WINNING_SCORES.forEach(win=>{
                     let mask = win&player.score;
@@ -79,20 +81,11 @@ export default class TicTacToe extends Component {
     }
 
     render(){
-        let board = this.state.board.map((state, index)=>{
-            let value = Math.pow(2, index);
-
-            if(this.state.currentPlayer !== "game_over" && state === ""){
-                return <button key={index} className={"tile " + value} onClick={()=>this.handleClick(value, index)}></button>;
-            } else {
-                return <div key={index} className={"tile " + value}>{state}</div>;
-            }
-        });
-
         return (
             <>
+            <h2>Tic Tac Toe</h2>
                 <div id="tic-tac-toe">
-                    {board}
+                    {this.state.board.map((state, index)=><Tile key={index} onClick={()=>this.handleClick(index)} state={state} />)}
                 </div>
                 <button onClick={()=>this.reset()}>Reset</button>
             </>
