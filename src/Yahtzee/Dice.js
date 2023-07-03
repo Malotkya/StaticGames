@@ -11,7 +11,7 @@ const Dice = props => {
     const lock = () => props.onClick(props.index);
 
     return (
-        <div className="die section" onClick={lock}>
+        <div className="die" onClick={lock}>
             <figure className={value} style={{
                 backgroundImage: `url(${image})`
             }}></figure>
