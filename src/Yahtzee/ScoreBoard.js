@@ -114,15 +114,23 @@ const ScoreBoard = props => {
         return state.count.toString();
     }
 
+    /** Get Upper Score Bonus
+     * 
+     */
+    const getUpperBonus = () => {
+        if(state.upperScore > UPPER_SCORE_LIMIT){
+            return UPPER_SCORE_BONUS;
+        }
+
+        return 0;
+    }
+
     /** Get Score Total
      * 
      * @returns {Number}
      */
     const getTotal = () => {
-        let additionalPoints = 0;
-        if(state.upperScore > UPPER_SCORE_LIMIT){
-            additionalPoints = UPPER_SCORE_BONUS;
-        }
+        let additionalPoints = getUpperBonus();
 
         if(state.count > 0){
             additionalPoints += state.count * ADDITIONAL_YAHTZEE;
@@ -154,10 +162,7 @@ const ScoreBoard = props => {
                 <ScoreInput update={()=>handleClick("upperScore", takeFour)}  text="Fours:" />
                 <ScoreInput update={()=>handleClick("upperScore", takeFive)}  text="Fives:"/>
                 <ScoreInput update={()=>handleClick("upperScore", takeSix)}   text="Sixs:"/>
-                <div className="input">
-                    <span>Bonus Points:</span>
-                    <span className="btn"></span>
-                </div>
+                <ScoreTotal text="Bonus Points:" value={getUpperBonus()} />
             </div>
             <div className="row">
                 <strong>Lower Section:</strong>
@@ -170,7 +175,7 @@ const ScoreBoard = props => {
                 <ScoreInput update={()=>handleClick("lowerScore", takeCH)} text="Chance:" />
             </div>
             <div className="row">
-                <ScoreTotal text="Upper Sub Total:" value={state.upperScore}/>
+                <ScoreTotal text="Upper Sub Total:" value={state.upperScore + getUpperBonus()}/>
                 <ScoreTotal text="Lower Sub Total:" value={state.lowerScore}/>
                 <hr/>
                 <ScoreTotal text="Additional Yahtzee's:" value={getYahtzeeCount()}/>
