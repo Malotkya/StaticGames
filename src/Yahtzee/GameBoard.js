@@ -92,7 +92,7 @@ const GameBoard = props =>{
                 {props.dice.map((value, index)=><Dice key={index} value={value} locked={isLocked(index)} index={index} onClick={()=>flipLock(index)}/>)}
             </div>
             <section className="section">
-                <button className="button" onClick={reset}>Reset</button>
+                <button className="button" onClick={reset}>Reset Game</button>
             </section>
         </>
     );
