@@ -22,6 +22,7 @@ const Yahtzee = () =>{
     const reset = () => {
         setDice([1,2,3,4,5]);
         setReset(c=>c+1);
+        setCount(0);
     }
 
     /** Get Dice Roles
