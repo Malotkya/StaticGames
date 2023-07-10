@@ -87,11 +87,13 @@ const GameBoard = props =>{
         <>
             <section className="section">
                 <button className="button" id="role" onClick={roleDice}>Role Dice</button>
-                <button className="button" onClick={reset}>Reset</button>
             </section>
             <div id="gameboard" className="section">
                 {props.dice.map((value, index)=><Dice key={index} value={value} locked={isLocked(index)} index={index} onClick={()=>flipLock(index)}/>)}
             </div>
+            <section className="section">
+                <button className="button" onClick={reset}>Reset</button>
+            </section>
         </>
     );
 }
