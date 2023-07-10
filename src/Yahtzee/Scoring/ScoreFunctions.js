@@ -90,7 +90,7 @@ export function takeFH(dice){
 function hasNext(dice, current, count){
     for(let d of dice){
         if(current+1 === d)
-            return hasNext(dice, d, count++);
+            return hasNext(dice, d, count+1);
     }
     return count;
 }
