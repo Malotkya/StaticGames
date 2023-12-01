@@ -6,13 +6,18 @@ import TicTacToe from "./TicTacToe";
 
 function App() {
 	const [game, setGame] = useState(<Yahtzee />)
+
+	const loadGame = (event, game) => {
+		event.target.blur();
+		setGame(game);
+	}
 	return (
 		<div className="App">
 		<header className="App-header">
 			<img src={logo} className="App-logo" alt="logo" />
 			<nav>
-				<button onClick={()=>setGame(<Yahtzee />)}>Yahtzee</button>
-				<button onClick={()=>setGame(<TicTacToe />)}>Tic Tac Toe</button>
+				<button onClick={(event)=>loadGame(event, <Yahtzee />)}>Yahtzee</button>
+				<button onClick={(event)=>loadGame(event, <TicTacToe />)}>Tic Tac Toe</button>
 			</nav>
 		</header>
 		<main>
@@ -20,8 +25,8 @@ function App() {
 		</main>
 		<footer>
 			Created By: Alex Malotky<br/>
-            <a target="_blank" href="https://github.com/Malotkya/StaticGames">Github Repo</a> |&nbsp; 
-            <a target="_blank" href="https://Alex.Malotky.net/Portfolio">My Other Work</a>
+            <a target="_blank"  rel="noreferrer" href="https://github.com/Malotkya/StaticGames">Github Repo</a> |&nbsp; 
+            <a target="_blank"  rel="noreferrer" href="https://Alex.Malotky.net/Portfolio">My Other Work</a>
 		</footer>
 		</div>
 	);

@@ -49,7 +49,15 @@ header nav {
 }
 
 header nav button {
-    color: red;
+    background-color: cyan;
+    border: 0;
+    font-size: 2rem;
+    margin: 0.2rem;
+}
+
+header nav button:hover,
+header nav button:focus{
+    background-color: darkcyan;
 }
 
 h2{
